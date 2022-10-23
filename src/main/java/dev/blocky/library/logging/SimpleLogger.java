@@ -156,7 +156,7 @@ public sealed class SimpleLogger extends LegacyAbstractLogger permits FallbackLo
         return DATE_FORMATTER.format(now);
     }
 
-    private void innerHandleNormalizedLoggingCall(@NotNull Level level, @NotNull List<Marker> markers, @NotNull String messagePattern,
+    private void innerHandleNormalizedLoggingCall(@NotNull Level level, @Nullable List<Marker> markers, @NotNull String messagePattern,
                                                   @NotNull Object[] arguments, @Nullable Throwable t)
     {
         StringBuilder buf = new StringBuilder(32);
@@ -218,11 +218,14 @@ public sealed class SimpleLogger extends LegacyAbstractLogger permits FallbackLo
             buf.append(name).append(" - ");
         }
 
-        buf.append(SP);
-
-        for (Marker marker : markers)
+        if (markers != null)
         {
-            buf.append(marker.getName()).append(SP);
+            buf.append(SP);
+
+            for (Marker marker : markers)
+            {
+                buf.append(marker.getName()).append(SP);
+            }
         }
 
         String formattedMessage = MessageFormatter.basicArrayFormat(messagePattern, arguments);
@@ -312,11 +315,16 @@ public sealed class SimpleLogger extends LegacyAbstractLogger permits FallbackLo
     }
 
     @Override
-    protected void handleNormalizedLoggingCall(@NotNull Level level, @NotNull Marker marker, @NotNull String messagePattern,
+    protected void handleNormalizedLoggingCall(@NotNull Level level, @Nullable Marker marker, @NotNull String messagePattern,
                                                @NotNull Object[] arguments, @Nullable Throwable t)
     {
-        List<Marker> markers = new ArrayList<>();
-        markers.add(marker);
+        List<Marker> markers = null;
+
+        if (marker != null)
+        {
+            markers = new ArrayList<>();
+            markers.add(marker);
+        }
 
         innerHandleNormalizedLoggingCall(level, markers, messagePattern, arguments, t);
     }

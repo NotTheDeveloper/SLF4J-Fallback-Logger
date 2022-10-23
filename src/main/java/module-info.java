@@ -9,4 +9,5 @@ module slf4jfbl {
     requires org.jetbrains.annotations;
 
     exports dev.blocky.library.logging;
+    exports dev.blocky.library.logging.annotations;
 }
