@@ -31,7 +31,7 @@ Creating the `Logger` object is done via the `FallbackLogger` class.
 **Example**:
 
 ```java
-Logger logger = FallbackLogger.getLog(YourClass.class);
+final Logger logger = FallbackLogger.getLog(YourClass.class);
 ```
 
 If no implementation is found, following message will be printed to the console on startup:

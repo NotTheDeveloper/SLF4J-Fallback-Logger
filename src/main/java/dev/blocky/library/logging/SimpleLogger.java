@@ -40,7 +40,7 @@ import static dev.blocky.library.logging.SimpleLogger.SimpleLoggerConfiguration.
  * A custom {@link SimpleLogger}. (from <a href="https://www.slf4j.org/api/org/slf4j/simple/SimpleLogger.html">slf4j-simple</a>).
  *
  * @author QOS.ch and BlockyDotJar
- * @version v1.0.0
+ * @version v1.1.0
  * @since v1.0.0
  */
 public sealed class SimpleLogger extends LegacyAbstractLogger permits FallbackLogger
@@ -102,7 +102,7 @@ public sealed class SimpleLogger extends LegacyAbstractLogger permits FallbackLo
 
         this.name = name;
 
-        String levelString = recursivelyComputeLevelString();
+        final String levelString = recursivelyComputeLevelString();
 
         if (levelString != null)
         {
@@ -134,7 +134,7 @@ public sealed class SimpleLogger extends LegacyAbstractLogger permits FallbackLo
 
     private synchronized void write(@NotNull StringBuilder buf, @Nullable Throwable t)
     {
-        PrintStream targetStream = OUTPUT_CHOICE.getTargetPrintStream();
+        final PrintStream targetStream = OUTPUT_CHOICE.getTargetPrintStream();
 
         targetStream.println(buf);
         writeThrowable(t, targetStream);
@@ -152,14 +152,14 @@ public sealed class SimpleLogger extends LegacyAbstractLogger permits FallbackLo
     @NotNull
     private synchronized String getFormattedDate()
     {
-        Date now = new Date();
+        final Date now = new Date();
         return DATE_FORMATTER.format(now);
     }
 
     private void innerHandleNormalizedLoggingCall(@NotNull Level level, @Nullable List<Marker> markers, @NotNull String messagePattern,
                                                   @NotNull Object[] arguments, @Nullable Throwable t)
     {
-        StringBuilder buf = new StringBuilder(32);
+        final StringBuilder buf = new StringBuilder(32);
 
         if (SHOW_DATE_TIME)
         {
@@ -194,7 +194,7 @@ public sealed class SimpleLogger extends LegacyAbstractLogger permits FallbackLo
             buf.append('[');
         }
 
-        String levelStr = level.name();
+        final String levelStr = level.name();
         buf.append(levelStr);
 
         if (LEVEL_IN_BRACKETS)
@@ -228,7 +228,7 @@ public sealed class SimpleLogger extends LegacyAbstractLogger permits FallbackLo
             }
         }
 
-        String formattedMessage = MessageFormatter.basicArrayFormat(messagePattern, arguments);
+        final String formattedMessage = MessageFormatter.basicArrayFormat(messagePattern, arguments);
 
         buf.append(formattedMessage);
 
@@ -387,9 +387,9 @@ public sealed class SimpleLogger extends LegacyAbstractLogger permits FallbackLo
 
         private static synchronized void loadProperties()
         {
-            ClassLoader threadCL = Thread.currentThread().getContextClassLoader();
+            final ClassLoader threadCL = Thread.currentThread().getContextClassLoader();
 
-            try (InputStream in = threadCL.getResourceAsStream(CONFIGURATION_FILE))
+            try (final InputStream in = threadCL.getResourceAsStream(CONFIGURATION_FILE))
             {
                 if (null != in)
                 {
@@ -397,7 +397,7 @@ public sealed class SimpleLogger extends LegacyAbstractLogger permits FallbackLo
                     {
                         SIMPLE_LOGGER_PROPS.load(in);
                     }
-                    catch (@NotNull IOException e)
+                    catch (IOException e)
                     {
                         // Ignored.
                     }
@@ -407,7 +407,7 @@ public sealed class SimpleLogger extends LegacyAbstractLogger permits FallbackLo
                     ClassLoader.getSystemResourceAsStream(CONFIGURATION_FILE);
                 }
             }
-            catch (@NotNull IOException e)
+            catch (IOException e)
             {
                 ClassLoader.getSystemResourceAsStream(CONFIGURATION_FILE);
             }
@@ -418,7 +418,7 @@ public sealed class SimpleLogger extends LegacyAbstractLogger permits FallbackLo
             INITIALIZED = true;
             loadProperties();
 
-            String defaultLogLevelString = getStringProperty(DEFAULT_LOG_LEVEL_KEY, null);
+            final String defaultLogLevelString = getStringProperty(DEFAULT_LOG_LEVEL_KEY, null);
 
             if (defaultLogLevelString != null)
             {
@@ -447,7 +447,7 @@ public sealed class SimpleLogger extends LegacyAbstractLogger permits FallbackLo
                 {
                     DATE_FORMATTER = new SimpleDateFormat(DATE_TIME_FORMAT_STR);
                 }
-                catch (@NotNull IllegalArgumentException e)
+                catch (IllegalArgumentException e)
                 {
                     Util.report("Bad date format in " + CONFIGURATION_FILE + "; will output relative time", e);
                 }
@@ -458,13 +458,13 @@ public sealed class SimpleLogger extends LegacyAbstractLogger permits FallbackLo
         @CheckReturnValue
         static String getStringProperty(@NotNull String name, @Nullable String defaultValue)
         {
-            String prop = getStringProperty(name);
+            final String prop = getStringProperty(name);
             return (prop == null) ? defaultValue : prop;
         }
 
         static boolean getBooleanProperty(@NotNull String name, boolean defaultValue)
         {
-            String prop = getStringProperty(name);
+            final String prop = getStringProperty(name);
             return (prop == null) ? defaultValue : "true".equalsIgnoreCase(prop);
         }
 
@@ -478,7 +478,7 @@ public sealed class SimpleLogger extends LegacyAbstractLogger permits FallbackLo
             {
                 prop = System.getProperty(name);
             }
-            catch (@NotNull SecurityException e)
+            catch (SecurityException e)
             {
                 // Ignored.
             }
@@ -545,11 +545,11 @@ public sealed class SimpleLogger extends LegacyAbstractLogger permits FallbackLo
             {
                 try
                 {
-                    FileOutputStream fos = new FileOutputStream(logFile);
-                    PrintStream printStream = new PrintStream(fos);
+                    final FileOutputStream fos = new FileOutputStream(logFile);
+                    final PrintStream printStream = new PrintStream(fos);
                     return new OutputChoice(printStream);
                 }
-                catch (@NotNull FileNotFoundException e)
+                catch (FileNotFoundException e)
                 {
                     Util.report("Could not open [" + logFile + "]. Defaulting to System.err", e);
                     return new OutputChoice(OutputChoice.OutputChoiceType.SYS_ERR);

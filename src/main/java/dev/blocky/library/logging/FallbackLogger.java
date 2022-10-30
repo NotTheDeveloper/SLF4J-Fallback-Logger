@@ -17,10 +17,8 @@
 package dev.blocky.library.logging;
 
 import com.google.errorprone.annotations.CheckReturnValue;
-import dev.blocky.library.logging.SimpleLogger;
 import org.apache.commons.collections4.map.CaseInsensitiveMap;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -66,17 +64,17 @@ public non-sealed class FallbackLogger extends SimpleLogger
 
             SLF4J = true;
         }
-        catch (@NotNull ClassNotFoundException eStatic)
+        catch (ClassNotFoundException eStatic)
         {
             // There is no 'StaticLoggerBinder' since SLF4J pre-1.8.x
             try
             {
-                Class<?> serviceProviderInterface = Class.forName("org.slf4j.spi.SLF4JServiceProvider");
+                final Class<?> serviceProviderInterface = Class.forName("org.slf4j.spi.SLF4JServiceProvider");
 
                 // Check if there is a 'ServiceProvider' implementation, indicating that SLF4J 1.8.x+ is installed
                 SLF4J = ServiceLoader.load(serviceProviderInterface).iterator().hasNext();
             }
-            catch (@NotNull ClassNotFoundException eService)
+            catch (ClassNotFoundException eService)
             {
                 // There is no 'ServiceProvider' interface (SLF4J 1.8.x+)
                 // Prints a warning of missing implementation
@@ -152,9 +150,9 @@ public non-sealed class FallbackLogger extends SimpleLogger
                 {
                     return lazyLambda.getString();
                 }
-                catch (@NotNull Exception ex)
+                catch (Exception ex)
                 {
-                    StringWriter sw = new StringWriter();
+                    final StringWriter sw = new StringWriter();
                     ex.printStackTrace(new PrintWriter(sw));
                     return "Error while evaluating lazy string... " + sw;
                 }

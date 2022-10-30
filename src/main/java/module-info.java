@@ -2,6 +2,8 @@
  * A fallback logger for SLF4J, which triggers if there is no 'StaticLoggerBinder' or 'ServiceProvider' implementation.
  */
 module slf4jfbl {
+    uses org.slf4j.spi.SLF4JServiceProvider;
+
     requires org.slf4j;
     requires org.apache.commons.collections4;
 
