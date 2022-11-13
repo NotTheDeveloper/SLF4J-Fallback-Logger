@@ -16,7 +16,6 @@
  */
 package dev.blocky.library.logging;
 
-import com.google.errorprone.annotations.CheckReturnValue;
 import org.apache.commons.collections4.map.CaseInsensitiveMap;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
@@ -35,7 +34,7 @@ import java.util.ServiceLoader;
  * <br>It also has the utility method {@link #getLazyString(LazyEvaluation)} which is used to lazily construct strings for logging.
  *
  * @author MinnDevelopment, enveeed and BlockyDotJar
- * @version v1.0.0
+ * @version v1.0.1
  * @since v1.0.0
  */
 public non-sealed class FallbackLogger extends SimpleLogger
@@ -138,7 +137,6 @@ public non-sealed class FallbackLogger extends SimpleLogger
      * @return An object that can be passed to SLF4J's logging methods as lazy parameter.
      */
     @NotNull
-    @CheckReturnValue
     public static Object getLazyString(@NotNull LazyEvaluation lazyLambda)
     {
         return new Object()

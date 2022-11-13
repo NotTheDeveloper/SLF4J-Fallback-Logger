@@ -37,7 +37,7 @@ dependencies {
 }
 
 group = "dev.blocky.library"
-version = "1.0.2"
+version = "1.0.3"
 description = "A fallback logger for SLF4J, which triggers if there is no 'StaticLoggerBinder' or 'ServiceProvider' implementation."
 
 java {
