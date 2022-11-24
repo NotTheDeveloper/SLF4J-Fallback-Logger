@@ -29,7 +29,7 @@ repositories {
 }
 
 dependencies {
-    api("org.slf4j:slf4j-api:2.0.3")
+    api("org.slf4j:slf4j-api:2.0.4")
     api("org.apache.commons:commons-collections4:4.4")
 
     compileOnly("com.google.errorprone:error_prone_annotations:2.16")
@@ -37,7 +37,7 @@ dependencies {
 }
 
 group = "dev.blocky.library"
-version = "1.0.3"
+version = "1.0.4"
 description = "A fallback logger for SLF4J, which triggers if there is no 'StaticLoggerBinder' or 'ServiceProvider' implementation."
 
 java {

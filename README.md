@@ -183,7 +183,7 @@ This project requires **Java 17+**
 <br>All dependencies are managed automatically by Gradle.
 
 * slf4j-api
-    * Version: **v2.0.3**
+    * Version: **v2.0.4**
     * [Github](https://github.com/qos-ch/slf4j)
 * commons-collections4
     * Version: **v4.4**
